@@ -20,10 +20,11 @@ defmodule TempoWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", TempoWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", TempoWeb do
+    pipe_through :api
+
+    post "/health/sync", HealthController, :sync
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:tempo, :dev_routes) do
