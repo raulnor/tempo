@@ -4,3 +4,4 @@ deps
 tempo_dev.db
 tempo_dev.db-shm
 tempo_dev.db-wal
+*.trace

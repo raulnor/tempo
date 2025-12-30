@@ -4,46 +4,54 @@ defmodule TempoWeb.HealthController do
   alias Tempo.Repo
 
   def sync(conn, %{"_json" => samples}) when is_list(samples) do
-    {stored, failed} =
+    parsed_samples =
       samples
-      |> Enum.map(&parse_and_store/1)
-      |> Enum.split_with(fn result -> result == :ok end)
+      |> Enum.map(&parse_sample/1)
+      |> Enum.reject(&is_nil/1)
+
+    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+
+    entries = Enum.map(parsed_samples, fn attrs ->
+      Map.merge(attrs, %{inserted_at: now, updated_at: now})
+    end)
+
+    {inserted, _} = Repo.insert_all(
+      Sample,
+      entries,
+      on_conflict: :replace_all,
+      conflict_target: :uuid
+    )
 
     json(conn, %{
       received: length(samples),
-      stored: length(stored),
-      failed: length(failed)
+      stored: inserted,
+      failed: length(samples) - length(parsed_samples)
     })
   end
 
-  defp parse_and_store(%{
+  defp parse_sample(%{
     "uuid" => uuid,
     "type" => type,
     "quantity" => quantity,
     "startDate" => start_date,
     "endDate" => end_date
   }) do
-    attrs = %{
+    %{
       uuid: uuid,
       type: type,
-      quantity: quantity,
+      quantity: to_float(quantity),
       start_date: parse_datetime(start_date),
       end_date: parse_datetime(end_date)
     }
-
-    %Sample{}
-    |> Sample.changeset(attrs)
-    |> Repo.insert(
-        on_conflict: :replace_all,
-        conflict_target: :uuid
-      )
-    |> case do
-      {:ok, _} -> :ok
-      {:error, _changeset} -> :error
-    end
   rescue
-    _ -> :error
+    _ -> nil
   end
+  defp parse_sample(_), do: nil
+
+  defp to_float(value) when is_float(value), do: value
+  defp to_float(value) when is_integer(value), do: value * 1.0
+  defp to_float(value) when is_binary(value), do: String.to_float(value)
+  defp to_float(_), do: 0.0
 
   defp parse_datetime(datetime_string) when is_binary(datetime_string) do
     case DateTime.from_iso8601(datetime_string) do
