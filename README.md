@@ -1,5 +1,7 @@
 # Tempo
 
+Tempo is a personal health data mining project. I'm trying to determine from the metrics I have how hard to push myself, and whether or not running is providing actual longevity.
+
 To start your Phoenix server:
 
 * Run `mix setup` to install and setup dependencies
@@ -7,12 +9,5 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4003`](http://localhost:4003) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+You'll also need to run the [iPhone client](https://github.com/raulnor/tempo-ios) to upload your own data. 
 
-## Learn more
-
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix
