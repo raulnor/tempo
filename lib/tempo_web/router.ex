@@ -18,7 +18,7 @@ defmodule TempoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    resources "/health/samples", SampleController
+    live "/health/samples", SampleLive
   end
 
   scope "/api", TempoWeb do
