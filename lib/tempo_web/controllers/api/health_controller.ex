@@ -11,16 +11,18 @@ defmodule TempoWeb.HealthController do
 
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
 
-    entries = Enum.map(parsed_samples, fn attrs ->
-      Map.merge(attrs, %{inserted_at: now, updated_at: now})
-    end)
+    entries =
+      Enum.map(parsed_samples, fn attrs ->
+        Map.merge(attrs, %{inserted_at: now, updated_at: now})
+      end)
 
-    {inserted, _} = Repo.insert_all(
-      Sample,
-      entries,
-      on_conflict: :replace_all,
-      conflict_target: :uuid
-    )
+    {inserted, _} =
+      Repo.insert_all(
+        Sample,
+        entries,
+        on_conflict: :replace_all,
+        conflict_target: :uuid
+      )
 
     json(conn, %{
       received: length(samples),
@@ -30,12 +32,12 @@ defmodule TempoWeb.HealthController do
   end
 
   defp parse_sample(%{
-    "uuid" => uuid,
-    "type" => type,
-    "quantity" => quantity,
-    "startDate" => start_date,
-    "endDate" => end_date
-  }) do
+         "uuid" => uuid,
+         "type" => type,
+         "quantity" => quantity,
+         "startDate" => start_date,
+         "endDate" => end_date
+       }) do
     %{
       uuid: uuid,
       type: type,
@@ -46,6 +48,7 @@ defmodule TempoWeb.HealthController do
   rescue
     _ -> nil
   end
+
   defp parse_sample(_), do: nil
 
   defp to_float(value) when is_float(value), do: value
@@ -59,5 +62,6 @@ defmodule TempoWeb.HealthController do
       _ -> nil
     end
   end
+
   defp parse_datetime(_), do: nil
 end
