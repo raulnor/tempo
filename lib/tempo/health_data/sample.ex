@@ -18,3 +18,7 @@ defmodule Tempo.HealthData.Sample do
     |> validate_required([:uuid, :type, :quantity, :start_date, :end_date])
   end
 end
+
+defimpl Phoenix.Param, for: Tempo.HealthData.Sample do
+  def to_param(%{uuid: uuid}), do: uuid
+end
