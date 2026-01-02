@@ -9,6 +9,7 @@ defmodule TempoWeb.SampleLive do
      |> assign(:sample_types, HealthData.list_sample_types())
      |> assign(:selected_type, nil)
      |> assign(:page, 1)
+     |> assign(:page_title, "Health Samples")
      |> assign(:per_page, 20)
      |> load_samples()}
   end
@@ -76,7 +77,7 @@ defmodule TempoWeb.SampleLive do
 
       <div class="mb-4">
         <form phx-change="filter_type">
-          <label for="type-filter" class="block text-sm font-medium text-gray-700">
+          <label for="type-filter" class="block text-sm font-medium">
             Filter by Type
           </label>
           <select
@@ -104,7 +105,7 @@ defmodule TempoWeb.SampleLive do
       </.table>
 
       <div class="mt-4 flex items-center justify-between">
-        <div class="text-sm text-gray-700">
+        <div class="text-sm">
           Page {@page} of {@total_pages}
         </div>
         <div class="flex gap-2">

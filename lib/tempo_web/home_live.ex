@@ -2,7 +2,9 @@ defmodule TempoWeb.HomeLive do
   use TempoWeb, :live_view
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok,
+     socket
+     |> assign(:page_title, "Main")}
   end
 
   def render(assigns) do
@@ -49,9 +51,7 @@ defmodule TempoWeb.HomeLive do
                   Health Samples
                 </span>
               </a>
-              <a
-                class="group relative rounded-box px-6 py-4 text-sm font-semibold leading-6 sm:py-6"
-              >
+              <a class="group relative rounded-box px-6 py-4 text-sm font-semibold leading-6 sm:py-6">
                 <span class="absolute inset-0 rounded-box bg-base-200 transition group-hover:bg-base-300 sm:group-hover:scale-105">
                 </span>
                 <span class="relative flex items-center gap-4 sm:flex-col">
