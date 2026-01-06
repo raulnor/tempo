@@ -71,4 +71,28 @@ defmodule Tempo.HealthData do
     |> order_by([s], s.type)
     |> Repo.all()
   end
+
+  @doc """
+  Returns the most recent sample for each type.
+
+  ## Examples
+
+      iex> list_latest_samples()
+      [%Sample{type: "HKQuantityTypeIdentifierBodyMass", ...}, ...]
+
+  """
+  def list_latest_samples do
+    # Get all sample types
+    types = list_sample_types()
+
+    # For each type, get the most recent sample
+    Enum.map(types, fn type ->
+      Sample
+      |> where([s], s.type == ^type)
+      |> order_by([s], desc: s.start_date)
+      |> limit(1)
+      |> Repo.one()
+    end)
+    |> Enum.reject(&is_nil/1)
+  end
 end
