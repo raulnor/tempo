@@ -2,6 +2,7 @@ defmodule TempoWeb.LatestSamplesLive do
   use TempoWeb, :live_view
 
   alias Tempo.HealthData
+  alias Tempo.HealthData.TypeTranslator
 
   def mount(_params, _session, socket) do
     {:ok,
@@ -26,10 +27,10 @@ defmodule TempoWeb.LatestSamplesLive do
       </.header>
 
       <.table id="latest-samples" rows={@samples}>
-        <:col :let={sample} label="Type">{sample.type}</:col>
-        <:col :let={sample} label="Quantity">{sample.quantity}</:col>
-        <:col :let={sample} label="Start date">{sample.start_date}</:col>
-        <:col :let={sample} label="End date">{sample.end_date}</:col>
+        <:col :let={sample} label="Type">{TypeTranslator.humanize(sample.type)}</:col>
+        <:col :let={sample} label="Quantity">{TypeTranslator.format_quantity(sample.quantity, sample.type)}</:col>
+        <:col :let={sample} label="Start date">{TypeTranslator.format_date(sample.start_date)}</:col>
+        <:col :let={sample} label="End date">{TypeTranslator.format_end_date(sample.start_date, sample.end_date)}</:col>
       </.table>
     </Layouts.app>
     """
