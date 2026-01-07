@@ -1,4 +1,4 @@
-defmodule Tempo.HealthData.TypeTranslator do
+defmodule Tempo.HealthData.Formatter do
   @moduledoc """
   Translates Apple Health Kit identifiers to human-readable names.
   """
@@ -26,6 +26,7 @@ defmodule Tempo.HealthData.TypeTranslator do
     "HKQuantityTypeIdentifierSwimmingStrokeCount" => "Swimming Strokes",
     "HKQuantityTypeIdentifierDistanceSwimming" => "Swimming Distance",
     "HKQuantityTypeIdentifierDistanceDownhillSnowSports" => "Downhill Snow Sports Distance",
+    "HKQuantityTypeIdentifierRunningPower" => "Running Power",
 
     # Vitals
     "HKQuantityTypeIdentifierHeartRate" => "Heart Rate",
@@ -40,6 +41,7 @@ defmodule Tempo.HealthData.TypeTranslator do
     "HKQuantityTypeIdentifierOxygenSaturation" => "Blood Oxygen",
     "HKQuantityTypeIdentifierPeripheralPerfusionIndex" => "Perfusion Index",
     "HKQuantityTypeIdentifierBloodGlucose" => "Blood Glucose",
+    "HKQuantityTypeIdentifierAppleSleepingWristTemperature" => "Wrist Temperature",
 
     # Nutrition
     "HKQuantityTypeIdentifierDietaryFatTotal" => "Dietary Fat",
