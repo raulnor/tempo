@@ -37,6 +37,8 @@ defmodule Tempo.HealthData do
       end
 
     total_count = Repo.aggregate(query, :count, :uuid)
+    start_record = (page - 1) * per_page + 1
+    end_record = min(page * per_page, total_count)
 
     samples =
       query
@@ -50,6 +52,8 @@ defmodule Tempo.HealthData do
       total_count: total_count,
       page: page,
       per_page: per_page,
+      start_record: start_record,
+      end_record: end_record,
       total_pages: ceil(total_count / per_page)
     }
   end

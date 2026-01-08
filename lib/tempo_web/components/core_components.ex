@@ -94,7 +94,11 @@ defmodule TempoWeb.CoreComponents do
   slot :inner_block, required: true
 
   def button(%{rest: rest} = assigns) do
-    variants = %{"primary" => "btn-primary", nil => "btn-primary btn-soft"}
+    variants = %{
+      "primary" => "btn-primary",
+      "secondary" => "btn-ghost",
+      nil => ""
+    }
 
     assigns =
       assign_new(assigns, :class, fn ->
@@ -288,7 +292,7 @@ defmodule TempoWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", "pb-4"]}>
+    <header class={[@actions != [] && "flex items-center justify-between gap-6"]}>
       <div>
         <h1 class="text-lg font-semibold leading-8">
           {render_slot(@inner_block)}

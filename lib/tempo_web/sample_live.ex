@@ -49,6 +49,8 @@ defmodule TempoWeb.SampleLive do
 
     socket
     |> assign(:samples, result.samples)
+    |> assign(:start_record, result.start_record)
+    |> assign(:end_record, result.end_record)
     |> assign(:total_count, result.total_count)
     |> assign(:total_pages, result.total_pages)
   end
@@ -70,31 +72,41 @@ defmodule TempoWeb.SampleLive do
     ~H"""
     <Layouts.app flash={@flash}>
       <.header>
-        Listing Samples
+        Health Samples
         <:subtitle>
-          Showing {@samples |> length()} of {@total_count} samples
+          Showing {@start_record}-{@end_record} of {@total_count} samples
         </:subtitle>
+        <:actions>
+        <.button
+          phx-click="goto_page"
+          phx-value-page={@page - 1}
+          disabled={@page <= 1}
+          variant="secondary"
+        >
+           Previous
+        </.button>
+          <.button
+            phx-click="goto_page"
+            phx-value-page={@page + 1}
+            disabled={@page >= @total_pages}
+            variant="secondary"
+          >
+            Next
+          </.button>
+        </:actions>
       </.header>
 
       <div class="mb-4">
         <form phx-change="filter_type">
-          <label for="type-filter" class="block text-sm font-medium">
-            Filter by Type
-          </label>
-          <select
-            id="type-filter"
+          <.input
+            type="select"
+            id="filter_type"
             name="type"
-            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-          >
-            <option value="">All Types</option>
-            <option
-              :for={type <- @sample_types}
-              value={type}
-              selected={type == @selected_type}
-            >
-              {Formatter.humanize(type)}
-            </option>
-          </select>
+            label="Filter by Type"
+            prompt="All Types"
+            options={Enum.map(@sample_types, &{Formatter.humanize(&1), &1})}
+            value={@selected_type}
+          />
         </form>
       </div>
 
@@ -105,29 +117,7 @@ defmodule TempoWeb.SampleLive do
         <:col :let={sample} label="End date">{Formatter.format_end_date(sample.start_date, sample.end_date)}</:col>
       </.table>
 
-      <div class="mt-4 flex items-center justify-between">
-        <div class="text-sm">
-          Page {@page} of {@total_pages}
-        </div>
-        <div class="flex gap-2">
-          <button
-            :if={@page > 1}
-            phx-click="goto_page"
-            phx-value-page={@page - 1}
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-          >
-            Previous
-          </button>
-          <button
-            :if={@page < @total_pages}
-            phx-click="goto_page"
-            phx-value-page={@page + 1}
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-          >
-            Next
-          </button>
-        </div>
-      </div>
+
     </Layouts.app>
     """
   end
