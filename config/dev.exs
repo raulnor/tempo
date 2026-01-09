@@ -17,7 +17,11 @@ config :tempo, TempoWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4003")],
-  check_origin: false,
+  check_origin: [
+    "//localhost",
+    "//127.0.0.1",
+    "//tempo.melvis.site"
+  ],
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "WLobm6jMGc8SkkPDGHCK4C8zQlHRNKa/VJ8amz1B2Uv+jHiQSOrfiTz3XYqrnPOl",
