@@ -53,9 +53,9 @@ defmodule TempoWeb.HomeLive do
               </a>
               <a
                 href="/health/latest"
-                class="group relative rounded-box px-6 py-4 text-sm font-semibold leading-6 sm:py-6">
-                <span class="absolute inset-0 rounded-box bg-base-200 transition group-hover:bg-base-300 sm:group-hover:scale-105"
+                class="group relative rounded-box px-6 py-4 text-sm font-semibold leading-6 sm:py-6"
               >
+                <span class="absolute inset-0 rounded-box bg-base-200 transition group-hover:bg-base-300 sm:group-hover:scale-105">
                 </span>
                 <span class="relative flex items-center gap-4 sm:flex-col">
                   <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6">
@@ -99,7 +99,10 @@ defmodule TempoWeb.HomeLive do
             </div>
             <div class="mt-10 grid grid-cols-1 gap-y-4 text-sm leading-6 text-base-content/80 sm:grid-cols-2">
               <div>
-                <a class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-base-200 hover:text-base-content">
+                <a
+                  href="/demo/chart"
+                  class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-base-200 hover:text-base-content"
+                >
                   <svg
                     viewBox="0 0 16 16"
                     aria-hidden="true"
@@ -107,7 +110,7 @@ defmodule TempoWeb.HomeLive do
                   >
                     <path d="M8 13.833c3.866 0 7-2.873 7-6.416C15 3.873 11.866 1 8 1S1 3.873 1 7.417c0 1.081.292 2.1.808 2.995.606 1.05.806 2.399.086 3.375l-.208.283c-.285.386-.01.905.465.85.852-.098 2.048-.318 3.137-.81a3.717 3.717 0 0 1 1.91-.318c.263.027.53.041.802.041Z" />
                   </svg>
-                  Coming soon!
+                  Chart demo
                 </a>
               </div>
               <div>

@@ -157,8 +157,10 @@ defmodule Tempo.HealthData.Formatter do
     cond do
       # Percentage types - multiply by 100 and add % sign
       is_percentage_type?(type) ->
-        formatted = :erlang.float_to_binary(quantity * 100.0, decimals: 1)
-        |> String.replace(~r/\.?0+$/, "")
+        formatted =
+          :erlang.float_to_binary(quantity * 100.0, decimals: 1)
+          |> String.replace(~r/\.?0+$/, "")
+
         "#{formatted} %"
 
       # Default - 3 decimal places, remove trailing zeros

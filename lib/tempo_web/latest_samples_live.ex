@@ -28,9 +28,13 @@ defmodule TempoWeb.LatestSamplesLive do
 
       <.table id="latest-samples" rows={@samples}>
         <:col :let={sample} label="Type">{Formatter.humanize(sample.type)}</:col>
-        <:col :let={sample} label="Quantity">{Formatter.format_quantity(sample.quantity, sample.type)}</:col>
+        <:col :let={sample} label="Quantity">
+          {Formatter.format_quantity(sample.quantity, sample.type)}
+        </:col>
         <:col :let={sample} label="Start date">{Formatter.format_date(sample.start_date)}</:col>
-        <:col :let={sample} label="End date">{Formatter.format_end_date(sample.start_date, sample.end_date)}</:col>
+        <:col :let={sample} label="End date">
+          {Formatter.format_end_date(sample.start_date, sample.end_date)}
+        </:col>
       </.table>
     </Layouts.app>
     """
