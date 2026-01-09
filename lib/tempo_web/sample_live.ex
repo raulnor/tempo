@@ -77,19 +77,17 @@ defmodule TempoWeb.SampleLive do
           Showing {@start_record}-{@end_record} of {@total_count} samples
         </:subtitle>
         <:actions>
-        <.button
-          phx-click="goto_page"
-          phx-value-page={@page - 1}
-          disabled={@page <= 1}
-          variant="secondary"
-        >
-           Previous
-        </.button>
+          <.button
+            phx-click="goto_page"
+            phx-value-page={@page - 1}
+            disabled={@page <= 1}
+          >
+            Previous
+          </.button>
           <.button
             phx-click="goto_page"
             phx-value-page={@page + 1}
             disabled={@page >= @total_pages}
-            variant="secondary"
           >
             Next
           </.button>
@@ -112,12 +110,14 @@ defmodule TempoWeb.SampleLive do
 
       <.table id="samples" rows={@samples}>
         <:col :let={sample} label="Type">{Formatter.humanize(sample.type)}</:col>
-        <:col :let={sample} label="Quantity">{Formatter.format_quantity(sample.quantity, sample.type)}</:col>
+        <:col :let={sample} label="Quantity">
+          {Formatter.format_quantity(sample.quantity, sample.type)}
+        </:col>
         <:col :let={sample} label="Start date">{Formatter.format_date(sample.start_date)}</:col>
-        <:col :let={sample} label="End date">{Formatter.format_end_date(sample.start_date, sample.end_date)}</:col>
+        <:col :let={sample} label="End date">
+          {Formatter.format_end_date(sample.start_date, sample.end_date)}
+        </:col>
       </.table>
-
-
     </Layouts.app>
     """
   end

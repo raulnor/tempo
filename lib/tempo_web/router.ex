@@ -20,6 +20,7 @@ defmodule TempoWeb.Router do
     live "/", HomeLive
     live "/health/samples", SampleLive
     live "/health/latest", LatestSamplesLive
+    live "/demo/chart", DemoChartLive
   end
 
   scope "/api", TempoWeb do
