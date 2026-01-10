@@ -7,6 +7,7 @@ defmodule TempoWeb.MetricsLive do
   def mount(_params, _session, socket) do
     socket =
       socket
+      |> assign(:page_title, "Health Metrics")
       |> assign(:selected_metric, nil)
       |> assign(:metric_types, [])
       |> assign(:time_range, 30)
@@ -83,7 +84,7 @@ defmodule TempoWeb.MetricsLive do
 
     option = %{
       title: %{
-        text: "#{human_name} Over Time",
+        text: human_name,
         left: "center"
       },
       tooltip: %{

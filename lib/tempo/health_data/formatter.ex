@@ -42,6 +42,7 @@ defmodule Tempo.HealthData.Formatter do
     "HKQuantityTypeIdentifierPeripheralPerfusionIndex" => "Perfusion Index",
     "HKQuantityTypeIdentifierBloodGlucose" => "Blood Glucose",
     "HKQuantityTypeIdentifierAppleSleepingWristTemperature" => "Wrist Temperature",
+    "HKQuantityTypeIdentifierVO2Max" => "VO₂ Max",
 
     # Nutrition
     "HKQuantityTypeIdentifierDietaryFatTotal" => "Dietary Fat",
