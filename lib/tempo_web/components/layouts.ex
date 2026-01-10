@@ -52,7 +52,7 @@ defmodule TempoWeb.Layouts do
     </header>
 
     <main class="px-4">
-      <div class="max-w-2xl space-y-4">
+      <div class="space-y-4">
         {render_slot(@inner_block)}
       </div>
     </main>

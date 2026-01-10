@@ -69,31 +69,32 @@ defmodule TempoWeb.HomeLive do
                   Latest Data
                 </span>
               </a>
-              <a class="group relative rounded-box px-6 py-4 text-sm font-semibold leading-6 sm:py-6">
+              <a
+                href="/health/metrics"
+                class="group relative rounded-box px-6 py-4 text-sm font-semibold leading-6 sm:py-6"
+              >
                 <span class="absolute inset-0 rounded-box bg-base-200 transition group-hover:bg-base-300 sm:group-hover:scale-105">
                 </span>
                 <span class="relative flex items-center gap-4 sm:flex-col">
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="h-6 w-6">
                     <path
-                      d="M12 1v6M12 17v6"
+                      d="M3 3v18h18"
                       stroke="currentColor"
                       stroke-width="2"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="4"
+                    <path
+                      d="M7 16l4-4 4 4 6-7"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                       fill="currentColor"
                       fill-opacity=".15"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
                     />
                   </svg>
-                  Coming soon!
+                  Metrics
                 </span>
               </a>
             </div>
