@@ -72,8 +72,8 @@ defmodule Tempo.HealthData do
     Sample
     |> select([s], s.type)
     |> distinct(true)
-    |> order_by([s], s.type)
     |> Repo.all()
+    |> Enum.sort_by(&Tempo.HealthData.Formatter.humanize/1)
   end
 
   @doc """
