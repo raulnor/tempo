@@ -43,6 +43,10 @@ custom classes must fully style the input
 - Ensure **clean typography, spacing, and layout balance** for a refined, premium look
 - Focus on **delightful details** like hover effects, loading states, and smooth page transitions
 
+### New Pages
+- When adding a new page, add a smoke test in `test/tempo_web/router_test.exs`.
+- Check to see if `lib/tempo` has an existing query before creating a new one.
+
 
 <!-- usage-rules-start -->
 
