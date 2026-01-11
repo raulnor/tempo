@@ -156,8 +156,8 @@ defmodule TempoWeb.MetricsLive do
               Visualize and analyze your health data over time
             </:subtitle>
           </.header>
-
-          <!-- Metric Selector and Time Range -->
+          
+    <!-- Metric Selector and Time Range -->
           <div class="flex flex-wrap gap-4">
             <div class="w-full max-w-xs">
               <form phx-change="select_metric">
@@ -191,8 +191,8 @@ defmodule TempoWeb.MetricsLive do
               </form>
             </div>
           </div>
-
-  <!-- Statistics Cards -->
+          
+    <!-- Statistics Cards -->
           <%= if @stats do %>
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
               <div class="stat bg-base-200 rounded-lg">
@@ -222,8 +222,8 @@ defmodule TempoWeb.MetricsLive do
               </div>
             </div>
           <% end %>
-
-  <!-- Chart -->
+          
+    <!-- Chart -->
           <div class="card bg-base-200">
             <div class="card-body">
               <div id="time_series_chart" phx-hook="Chart" class="w-full h-96" phx-update="ignore">

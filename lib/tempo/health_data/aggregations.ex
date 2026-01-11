@@ -113,7 +113,6 @@ defmodule Tempo.HealthData.Aggregations do
     }
   end
 
-
   # Helper to convert Decimal to float
   defp decimal_to_float(nil), do: 0.0
   defp decimal_to_float(value) when is_float(value), do: value
