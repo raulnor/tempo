@@ -82,9 +82,162 @@ Hooks.Chart = {
     let chart = echarts.init(this.el)
     this.chart = chart // Store chart reference for theme handler
 
-    this.handleEvent(`chart-option-${this.el.id}`, (option) =>
+    // Create custom data display element (Apple Health style)
+    const dataDisplay = document.createElement('div')
+    dataDisplay.id = `${this.el.id}-data-display`
+    dataDisplay.style.cssText = `
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      padding: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 9999;
+      text-align: right;
+    `
+    this.el.style.position = 'relative'
+    this.el.appendChild(dataDisplay)
+    this.dataDisplay = dataDisplay
+
+    // Get text color based on theme
+    const getTextColor = () => {
+      const theme = document.documentElement.getAttribute('data-theme')
+      if (!theme || theme === 'system') {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        return isDark ? '#f0f0f0' : '#101010'
+      }
+      return theme === 'dark' ? '#f0f0f0' : '#101010'
+    }
+
+    // Helper function to update data display
+    const updateDataDisplay = (params) => {
+      const date = params.name
+      const value = typeof params.value === 'number' ? params.value.toFixed(1) : params.value
+      const textColor = getTextColor()
+
+      // Get the grid rect to align with the chart's right edge
+      const grid = chart.getModel().getComponent('grid', 0)
+      const gridRect = grid.coordinateSystem.getRect()
+      const rightEdge = gridRect.x + gridRect.width
+
+      dataDisplay.innerHTML = `
+        <div style="font-size: 18px; font-weight: 600; line-height: 1; color: ${textColor}; margin-bottom: 2px;">${value}</div>
+        <div style="font-size: 13px; opacity: 0.6; color: ${textColor};">${date}</div>
+      `
+      dataDisplay.style.right = (this.el.offsetWidth - rightEdge) + 'px'
+      dataDisplay.style.opacity = '1'
+    }
+
+    // Track whether data is pinned via click
+    let isPinned = false
+    let pinnedParams = null
+    let lastHoveredIndex = null
+
+    // Function to show latest data point by default
+    const showLatestData = () => {
+      const option = chart.getOption()
+      if (option && option.series && option.series[0] && option.series[0].data) {
+        const data = option.series[0].data
+        const xAxisData = option.xAxis[0].data
+        if (data.length > 0) {
+          const lastIndex = data.length - 1
+          const value = typeof data[lastIndex] === 'object' && data[lastIndex].value !== undefined
+            ? data[lastIndex].value
+            : data[lastIndex]
+          updateDataDisplay({
+            name: xAxisData[lastIndex],
+            value: value,
+            seriesName: option.series[0].name
+          })
+          lastHoveredIndex = lastIndex
+        }
+      }
+    }
+
+    // Handle click events - toggle pin
+    chart.on('click', (params) => {
+      if (params.componentType === 'series') {
+        if (isPinned && pinnedParams && pinnedParams.dataIndex === params.dataIndex) {
+          // Clicking the same bar unpins it
+          isPinned = false
+          pinnedParams = null
+          // Downplay the previously pinned bar
+          chart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: params.dataIndex
+          })
+          showLatestData()
+        } else {
+          // Unpin previous if exists
+          if (isPinned && pinnedParams) {
+            chart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 0,
+              dataIndex: pinnedParams.dataIndex
+            })
+          }
+          // Pin this bar
+          isPinned = true
+          pinnedParams = params
+          lastHoveredIndex = params.dataIndex
+          // Highlight the pinned bar
+          chart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: params.dataIndex
+          })
+          updateDataDisplay(params)
+        }
+      } else {
+        // Clicking outside unpins
+        if (isPinned && pinnedParams) {
+          chart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: pinnedParams.dataIndex
+          })
+        }
+        isPinned = false
+        pinnedParams = null
+        showLatestData()
+      }
+    })
+
+    // Handle mouseover events
+    chart.on('mouseover', (params) => {
+      if (params.componentType === 'series' && !isPinned) {
+        // Downplay the previously hovered bar
+        if (lastHoveredIndex !== null && lastHoveredIndex !== params.dataIndex) {
+          chart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: lastHoveredIndex
+          })
+        }
+        // Highlight the new bar
+        chart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: params.dataIndex
+        })
+        lastHoveredIndex = params.dataIndex
+        updateDataDisplay(params)
+      }
+    })
+
+    chart.on('mouseout', (params) => {
+      // Keep the last hovered bar highlighted and data displayed
+    })
+
+    this.handleEvent(`chart-option-${this.el.id}`, (option) => {
       this.render(chart, option)
-    )
+      // Show latest data after chart is rendered (only if not pinned)
+      if (!isPinned) {
+        setTimeout(() => showLatestData(), 100)
+      }
+    })
 
     // Handle window resize
     this.resizeHandler = () => {

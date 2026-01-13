@@ -85,18 +85,21 @@ defmodule TempoWeb.MetricsLive do
     option = %{
       title: %{
         text: human_name,
-        left: "center"
+        left: "3%",
+        top: "3%",
+        textStyle: %{
+          fontSize: 18,
+          fontWeight: "600"
+        }
       },
       tooltip: %{
-        trigger: "axis",
-        axisPointer: %{
-          type: "cross"
-        }
+        show: false
       },
       grid: %{
         left: "3%",
         right: "4%",
         bottom: "3%",
+        top: "15%",
         containLabel: true
       },
       xAxis: %{
@@ -113,7 +116,13 @@ defmodule TempoWeb.MetricsLive do
           type: "bar",
           data: values,
           itemStyle: %{
-            color: "#3b82f6"
+            color: "#3b82f6",
+            borderRadius: [4, 4, 0, 0]
+          },
+          emphasis: %{
+            itemStyle: %{
+              color: "#fbbf24"
+            }
           }
         }
       ]
