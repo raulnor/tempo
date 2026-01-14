@@ -1,6 +1,6 @@
 # Tempo
 
-Tempo is a personal health data mining project. I'm trying to determine from the metrics I have how hard to push myself, and whether or not running is providing actual longevity.
+Health data belongs to the person who generated it. Apple collects everything and surfaces nothing useful. Tempo exists to fix that for me. I'm trying to determine from the metrics I have how hard to push myself, and whether or not running is providing actual longevity.
 
 To start your Phoenix server:
 
