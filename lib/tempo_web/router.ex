@@ -27,6 +27,7 @@ defmodule TempoWeb.Router do
     pipe_through :api
 
     post "/health/sync", HealthController, :sync
+    get "/health/status", HealthController, :status
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

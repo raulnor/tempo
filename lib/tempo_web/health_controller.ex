@@ -1,7 +1,25 @@
 defmodule TempoWeb.HealthController do
   use TempoWeb, :controller
+  import Ecto.Query
   alias Tempo.HealthData.Sample
   alias Tempo.Repo
+
+  def status(conn, _params) do
+    watermarks =
+      from(h in Sample,
+        group_by: h.type,
+        select: %{type: h.type, endDate: max(h.end_date)}
+      )
+      |> Repo.all()
+      |> Enum.map(fn %{type: type, endDate: end_date} ->
+        %{
+          type: type,
+          endDate: DateTime.to_iso8601(end_date)
+        }
+      end)
+
+    json(conn, %{samples: watermarks})
+  end
 
   def sync(conn, %{"_json" => samples}) when is_list(samples) do
     parsed_samples =
