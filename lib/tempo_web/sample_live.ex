@@ -11,8 +11,7 @@ defmodule TempoWeb.SampleLive do
      |> assign(:selected_type, nil)
      |> assign(:page, 1)
      |> assign(:page_title, "Health Samples")
-     |> assign(:per_page, 20)
-     |> load_samples()}
+     |> assign(:per_page, 20)}
   end
 
   def handle_params(params, _uri, socket) do
@@ -44,7 +43,8 @@ defmodule TempoWeb.SampleLive do
       HealthData.list_samples(
         page: socket.assigns.page,
         per_page: socket.assigns.per_page,
-        type: socket.assigns.selected_type
+        type: socket.assigns.selected_type,
+        skip_count: socket.assigns.page > 1
       )
 
     socket
@@ -53,6 +53,7 @@ defmodule TempoWeb.SampleLive do
     |> assign(:end_record, result.end_record)
     |> assign(:total_count, result.total_count)
     |> assign(:total_pages, result.total_pages)
+    |> assign(:has_more, result.has_more)
   end
 
   defp build_path(_socket, page, type) do
@@ -74,7 +75,7 @@ defmodule TempoWeb.SampleLive do
       <.header>
         Health Samples
         <:subtitle>
-          Showing {@start_record}-{@end_record} of {@total_count} samples
+          Showing {@start_record}-{@end_record}<%= if @total_count, do: " of #{@total_count}", else: "" %> samples
         </:subtitle>
         <:actions>
           <.button
@@ -87,7 +88,7 @@ defmodule TempoWeb.SampleLive do
           <.button
             phx-click="goto_page"
             phx-value-page={@page + 1}
-            disabled={@page >= @total_pages}
+            disabled={!@has_more}
           >
             Next
           </.button>
