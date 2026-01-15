@@ -171,8 +171,19 @@ defmodule Tempo.HealthData.Formatter do
     end
   end
 
-  # Helper to identify percentage types
-  defp is_percentage_type?(type) do
+  @doc """
+  Returns true if the type is a percentage type.
+
+  ## Examples
+
+      iex> is_percentage_type?("HKQuantityTypeIdentifierBodyFatPercentage")
+      true
+
+      iex> is_percentage_type?("HKQuantityTypeIdentifierBodyMass")
+      false
+
+  """
+  def is_percentage_type?(type) do
     type in [
       "HKQuantityTypeIdentifierBodyFatPercentage",
       "HKQuantityTypeIdentifierOxygenSaturation",

@@ -165,10 +165,10 @@ defmodule TempoWeb.MetricsLive do
               Visualize and analyze your health data over time
             </:subtitle>
           </.header>
-          
+
     <!-- Metric Selector and Time Range -->
-          <div class="flex flex-wrap gap-4">
-            <div class="w-full max-w-xs">
+          <div class="flex gap-4">
+            <div class="flex-1 max-w-xs">
               <form phx-change="select_metric">
                 <.input
                   type="select"
@@ -181,7 +181,7 @@ defmodule TempoWeb.MetricsLive do
               </form>
             </div>
 
-            <div class="w-full max-w-xs">
+            <div class="flex-1 max-w-xs">
               <form phx-change="change_time_range">
                 <.input
                   type="select"
@@ -200,38 +200,7 @@ defmodule TempoWeb.MetricsLive do
               </form>
             </div>
           </div>
-          
-    <!-- Statistics Cards -->
-          <%= if @stats do %>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-              <div class="stat bg-base-200 rounded-lg">
-                <div class="stat-title">Total</div>
-                <div class="stat-value text-2xl">{format_stat(@stats.total)}</div>
-                <div class="stat-desc">Sum of all values</div>
-              </div>
-              <div class="stat bg-base-200 rounded-lg">
-                <div class="stat-title">Average</div>
-                <div class="stat-value text-2xl">{format_stat(@stats.avg)}</div>
-                <div class="stat-desc">Mean value</div>
-              </div>
-              <div class="stat bg-base-200 rounded-lg">
-                <div class="stat-title">Minimum</div>
-                <div class="stat-value text-2xl">{format_stat(@stats.min)}</div>
-                <div class="stat-desc">Lowest recorded</div>
-              </div>
-              <div class="stat bg-base-200 rounded-lg">
-                <div class="stat-title">Maximum</div>
-                <div class="stat-value text-2xl">{format_stat(@stats.max)}</div>
-                <div class="stat-desc">Highest recorded</div>
-              </div>
-              <div class="stat bg-base-200 rounded-lg">
-                <div class="stat-title">Samples</div>
-                <div class="stat-value text-2xl">{@stats.count}</div>
-                <div class="stat-desc">Total data points</div>
-              </div>
-            </div>
-          <% end %>
-          
+
     <!-- Chart -->
           <div class="card bg-base-200">
             <div class="card-body">
@@ -239,12 +208,25 @@ defmodule TempoWeb.MetricsLive do
               </div>
             </div>
           </div>
+
+          <%= if @stats do %>
+            <div class="text-sm mt-4 flex flex-wrap justify-center gap-y-2">
+              <%= unless Formatter.is_percentage_type?(@selected_metric) do %>
+                <span class="mx-2">Total: <span class="font-semibold">{Formatter.format_quantity(@stats.total, @selected_metric)}</span></span>
+                <span class="opacity-30">|</span>
+              <% end %>
+              <span class="mx-2">Avg: <span class="font-semibold">{Formatter.format_quantity(@stats.avg, @selected_metric)}</span></span>
+              <span class="opacity-30">|</span>
+              <span class="mx-2">Min: <span class="font-semibold">{Formatter.format_quantity(@stats.min, @selected_metric)}</span></span>
+              <span class="opacity-30">|</span>
+              <span class="mx-2">Max: <span class="font-semibold">{Formatter.format_quantity(@stats.max, @selected_metric)}</span></span>
+              <span class="opacity-30">|</span>
+              <span class="mx-2">Samples: <span class="font-semibold">{@stats.count}</span></span>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
     </Layouts.app>
     """
   end
-
-  defp format_stat(value) when is_float(value), do: Float.round(value, 1)
-  defp format_stat(value), do: value
 end
