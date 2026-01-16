@@ -16,6 +16,7 @@ defmodule Tempo.Application do
       {Phoenix.PubSub, name: Tempo.PubSub},
       # Start a worker by calling: Tempo.Worker.start_link(arg)
       # {Tempo.Worker, arg},
+      Tempo.HealthData.SampleCounter,
       # Start to serve requests, typically the last entry
       TempoWeb.Endpoint
     ]

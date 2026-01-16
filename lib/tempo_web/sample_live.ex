@@ -2,7 +2,7 @@ defmodule TempoWeb.SampleLive do
   use TempoWeb, :live_view
 
   alias Tempo.HealthData
-  alias Tempo.HealthData.Formatter
+  alias Tempo.HealthData.{Formatter, SampleCounter}
 
   def mount(_params, _session, socket) do
     {:ok,
@@ -43,16 +43,31 @@ defmodule TempoWeb.SampleLive do
       HealthData.list_samples(
         page: socket.assigns.page,
         per_page: socket.assigns.per_page,
-        type: socket.assigns.selected_type,
-        skip_count: socket.assigns.page > 1
+        type: socket.assigns.selected_type
       )
+
+    # Get total count from ETS instead of expensive DB query
+    total_count =
+      if socket.assigns.selected_type do
+        SampleCounter.get(socket.assigns.selected_type)
+      else
+        SampleCounter.get_all()
+        |> Map.values()
+        |> Enum.sum()
+      end
+
+    total_pages = ceil(total_count / socket.assigns.per_page)
+
+    # Calculate start and end record numbers
+    start_record = (socket.assigns.page - 1) * socket.assigns.per_page + 1
+    end_record = start_record + length(result.samples) - 1
 
     socket
     |> assign(:samples, result.samples)
-    |> assign(:start_record, result.start_record)
-    |> assign(:end_record, result.end_record)
-    |> assign(:total_count, result.total_count)
-    |> assign(:total_pages, result.total_pages)
+    |> assign(:start_record, start_record)
+    |> assign(:end_record, end_record)
+    |> assign(:total_count, total_count)
+    |> assign(:total_pages, total_pages)
     |> assign(:has_more, result.has_more)
   end
 

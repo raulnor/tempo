@@ -7,6 +7,7 @@ defmodule Tempo.HealthData do
   alias Tempo.Repo
 
   alias Tempo.HealthData.Sample
+  alias Tempo.HealthData.SampleCounter
 
   @doc """
   Returns a paginated list of samples with optional type filter.
@@ -15,19 +16,17 @@ defmodule Tempo.HealthData do
     * `:page` - Page number (default: 1)
     * `:per_page` - Items per page (default: 20)
     * `:type` - Filter by sample type (optional)
-    * `:skip_count` - Skip the expensive COUNT query (default: false)
 
   ## Examples
 
       iex> list_samples(page: 1, per_page: 20)
-      %{samples: [%Sample{}, ...], total_count: 100, page: 1, per_page: 20}
+      %{samples: [%Sample{}, ...], page: 1, per_page: 20, has_more: true}
 
   """
   def list_samples(opts \\ []) do
     page = Keyword.get(opts, :page, 1)
     per_page = Keyword.get(opts, :per_page, 20)
     type_filter = Keyword.get(opts, :type)
-    skip_count = Keyword.get(opts, :skip_count, false)
 
     query = Sample
 
@@ -49,27 +48,10 @@ defmodule Tempo.HealthData do
     has_more = length(samples) > per_page
     samples = Enum.take(samples, per_page)
 
-    # Only count if explicitly requested or on first page
-    {total_count, total_pages} =
-      if skip_count and page > 1 do
-        # Estimate based on current page
-        {nil, nil}
-      else
-        count = Repo.aggregate(query, :count, :uuid)
-        {count, ceil(count / per_page)}
-      end
-
-    start_record = (page - 1) * per_page + 1
-    end_record = start_record + length(samples) - 1
-
     %{
       samples: samples,
-      total_count: total_count,
       page: page,
       per_page: per_page,
-      start_record: start_record,
-      end_record: end_record,
-      total_pages: total_pages,
       has_more: has_more
     }
   end
@@ -78,6 +60,8 @@ defmodule Tempo.HealthData do
   Returns a list of unique sample types.
   NOTE: Types are Apple Health keys.
 
+  Uses ETS cache from SampleCounter for fast lookups.
+
   ## Examples
 
       iex> list_sample_types()
@@ -85,10 +69,9 @@ defmodule Tempo.HealthData do
 
   """
   def list_sample_types do
-    Sample
-    |> select([s], s.type)
-    |> distinct(true)
-    |> Repo.all()
+    # Get types from ETS cache (much faster than DB query)
+    SampleCounter.get_all()
+    |> Map.keys()
     |> Enum.sort_by(&Tempo.HealthData.Formatter.humanize/1)
   end
 

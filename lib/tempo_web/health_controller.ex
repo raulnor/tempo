@@ -1,7 +1,7 @@
 defmodule TempoWeb.HealthController do
   use TempoWeb, :controller
   import Ecto.Query
-  alias Tempo.HealthData.Sample
+  alias Tempo.HealthData.{Sample, SampleCounter}
   alias Tempo.Repo
 
   def status(conn, _params) do
@@ -41,6 +41,13 @@ defmodule TempoWeb.HealthController do
         on_conflict: :replace_all,
         conflict_target: :uuid
       )
+
+    # Update ETS counts for each sample type
+    entries
+    |> Enum.frequencies_by(& &1.type)
+    |> Enum.each(fn {type, count} ->
+      SampleCounter.increment(type, count)
+    end)
 
     json(conn, %{
       received: length(samples),

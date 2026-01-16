@@ -2,7 +2,7 @@ defmodule TempoWeb.LatestSamplesLive do
   use TempoWeb, :live_view
 
   alias Tempo.HealthData
-  alias Tempo.HealthData.Formatter
+  alias Tempo.HealthData.{Formatter, SampleCounter}
 
   def mount(_params, _session, socket) do
     {:ok,
@@ -28,6 +28,9 @@ defmodule TempoWeb.LatestSamplesLive do
 
       <.table id="latest-samples" rows={@samples}>
         <:col :let={sample} label="Type">{Formatter.humanize(sample.type)}</:col>
+        <:col :let={sample} label="Count">
+          {SampleCounter.get(sample.type)}
+        </:col>
         <:col :let={sample} label="Quantity">
           {Formatter.format_quantity(sample.quantity, sample.type)}
         </:col>
