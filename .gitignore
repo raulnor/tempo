@@ -10,3 +10,4 @@ priv/static/assets
 # Databases
 tempo_dev.*
 tempo_test.*
+reports/.ipynb_checkpoints

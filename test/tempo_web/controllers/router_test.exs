@@ -27,5 +27,10 @@ defmodule TempoWeb.RouterTest do
       conn = get(conn, ~p"/health/metrics")
       assert html_response(conn, 200) =~ "Health Metrics"
     end
+
+    test "GET /health/readiness", %{conn: conn} do
+      conn = get(conn, ~p"/health/readiness")
+      assert html_response(conn, 200) =~ "HRV Readiness"
+    end
   end
 end

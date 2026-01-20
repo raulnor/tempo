@@ -284,4 +284,28 @@ Hooks.Chart = {
   }
 }
 
+Hooks.HRVChart = {
+  mounted() {
+    // Get all point groups
+    this.el.addEventListener('mouseover', (e) => {
+      const group = e.target.closest('g[data-index]')
+      if (group) {
+        const index = group.dataset.index
+        this.pushEvent("show_tooltip", { index: index })
+      }
+    })
+
+    this.el.addEventListener('mouseout', (e) => {
+      const group = e.target.closest('g[data-index]')
+      if (group) {
+        // Check if we're still within the same group
+        const relatedTarget = e.relatedTarget
+        if (!relatedTarget || !group.contains(relatedTarget)) {
+          this.pushEvent("hide_tooltip", {})
+        }
+      }
+    })
+  }
+}
+
 export default Hooks;

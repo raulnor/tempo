@@ -54,6 +54,9 @@ defmodule TempoWeb.Layouts do
             <a href="/health/metrics" class="btn btn-ghost btn-sm">Metrics</a>
           </li>
           <li>
+            <a href="/health/readiness" class="btn btn-ghost btn-sm">Readiness</a>
+          </li>
+          <li>
             <.theme_toggle />
           </li>
         </ul>
