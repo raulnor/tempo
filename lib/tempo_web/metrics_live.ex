@@ -165,7 +165,7 @@ defmodule TempoWeb.MetricsLive do
               Visualize and analyze your health data over time
             </:subtitle>
           </.header>
-
+          
     <!-- Metric Selector and Time Range -->
           <div class="flex gap-4">
             <div class="flex-1 max-w-xs">
@@ -200,7 +200,7 @@ defmodule TempoWeb.MetricsLive do
               </form>
             </div>
           </div>
-
+          
     <!-- Chart -->
           <div class="card bg-base-200">
             <div class="card-body">
@@ -212,14 +212,34 @@ defmodule TempoWeb.MetricsLive do
           <%= if @stats do %>
             <div class="text-sm mt-4 flex flex-wrap justify-center gap-y-2">
               <%= unless Formatter.is_percentage_type?(@selected_metric) do %>
-                <span class="mx-2">Total: <span class="font-semibold">{Formatter.format_quantity(@stats.total, @selected_metric)}</span></span>
+                <span class="mx-2">
+                  Total:
+                  <span class="font-semibold">
+                    {Formatter.format_quantity(@stats.total, @selected_metric)}
+                  </span>
+                </span>
                 <span class="opacity-30">|</span>
               <% end %>
-              <span class="mx-2">Avg: <span class="font-semibold">{Formatter.format_quantity(@stats.avg, @selected_metric)}</span></span>
+              <span class="mx-2">
+                Avg:
+                <span class="font-semibold">
+                  {Formatter.format_quantity(@stats.avg, @selected_metric)}
+                </span>
+              </span>
               <span class="opacity-30">|</span>
-              <span class="mx-2">Min: <span class="font-semibold">{Formatter.format_quantity(@stats.min, @selected_metric)}</span></span>
+              <span class="mx-2">
+                Min:
+                <span class="font-semibold">
+                  {Formatter.format_quantity(@stats.min, @selected_metric)}
+                </span>
+              </span>
               <span class="opacity-30">|</span>
-              <span class="mx-2">Max: <span class="font-semibold">{Formatter.format_quantity(@stats.max, @selected_metric)}</span></span>
+              <span class="mx-2">
+                Max:
+                <span class="font-semibold">
+                  {Formatter.format_quantity(@stats.max, @selected_metric)}
+                </span>
+              </span>
               <span class="opacity-30">|</span>
               <span class="mx-2">Samples: <span class="font-semibold">{@stats.count}</span></span>
             </div>

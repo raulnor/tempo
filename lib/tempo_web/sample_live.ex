@@ -90,7 +90,7 @@ defmodule TempoWeb.SampleLive do
       <.header>
         Health Samples
         <:subtitle>
-          Showing {@start_record}-{@end_record}<%= if @total_count, do: " of #{@total_count}", else: "" %> samples
+          Showing {@start_record}-{@end_record}{if @total_count, do: " of #{@total_count}", else: ""} samples
         </:subtitle>
         <:actions>
           <.button
