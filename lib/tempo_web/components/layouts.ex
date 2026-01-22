@@ -45,19 +45,13 @@ defmodule TempoWeb.Layouts do
       <div class="flex-none">
         <ul class="flex flex-column px-1 space-x-4 items-center">
           <li>
-            <a href="/health/latest" class="btn btn-ghost btn-sm">Latest</a>
-          </li>
-          <li>
             <a href="/health/samples" class="btn btn-ghost btn-sm">Samples</a>
           </li>
           <li>
             <a href="/health/metrics" class="btn btn-ghost btn-sm">Metrics</a>
           </li>
           <li>
-            <a href="/health/readiness" class="btn btn-ghost btn-sm">Readiness</a>
-          </li>
-          <li>
-            <.theme_toggle />
+            <a href="/sitemap" class="btn btn-ghost btn-sm">Sitemap</a>
           </li>
         </ul>
       </div>

@@ -18,6 +18,7 @@ defmodule TempoWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive
+    live "/sitemap", SitemapLive
     live "/health/samples", SampleLive
     live "/health/latest", LatestSamplesLive
     live "/health/metrics", MetricsLive
